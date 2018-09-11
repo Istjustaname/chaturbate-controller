@@ -38,6 +38,7 @@
   "dependencies": {
     "@istjustaname/chaturbate-events": "github:istjustaname/chaturbate-events",
     "@istjustaname/chaturbate-panel-parser": "github:istjustaname/chaturbate-panel-parser",
-    "ajv": "^6.5.3"
+    "ajv": "^6.5.3",
+    "debug": "^4.0.0"
   }
 }
