@@ -36,8 +36,8 @@
     "mocha": "^5.2.0"
   },
   "dependencies": {
-    "@istjustaname/chaturbate-events": "file:../chaturbate-events",
-    "@istjustaname/chaturbate-panel-parser": "file:../chaturbate-panel-parser",
+    "@istjustaname/chaturbate-events": "github:istjustaname/chaturbate-events",
+    "@istjustaname/chaturbate-panel-parser": "github:istjustaname/chaturbate-panel-parser",
     "ajv": "^6.5.3"
   }
 }
