@@ -26,11 +26,11 @@
   },
   "homepage": "https://github.com/paulallen87/chaturbate-controller#readme",
   "devDependencies": {
-    "chai": "^4.1.2",
+    "chai": "^4.2.0",
     "coveralls": "^3.0.2",
-    "eslint": "^5.5.0",
+    "eslint": "^5.8.0",
     "eslint-config-google": "^0.10.0",
-    "eslint-plugin-jsdoc": "^3.8.0",
+    "eslint-plugin-jsdoc": "^3.9.1",
     "eslint-plugin-node": "^7.0.1",
     "istanbul": "^0.4.5",
     "mocha": "^5.2.0"
@@ -38,8 +38,8 @@
   "dependencies": {
     "@istjustaname/chaturbate-events": "github:istjustaname/chaturbate-events",
     "@istjustaname/chaturbate-panel-parser": "github:istjustaname/chaturbate-panel-parser",
-    "ajv": "^6.5.3",
+    "ajv": "^6.5.4",
     "cheerio": "^1.0.0-rc.2",
-    "debug": "^4.0.0"
+    "debug": "^4.1.0"
   }
 }
