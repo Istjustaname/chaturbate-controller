@@ -1,6 +1,6 @@
 {
   "name": "@istjustaname/chaturbate-controller",
-  "version": "1.0.16",
+  "version": "1.0.17",
   "description": "A module for tracking the state of a Chaturbate profile.",
   "main": "index.js",
   "engines": {
@@ -29,9 +29,9 @@
     "chai": "^4.2.0",
     "coveralls": "^3.0.2",
     "eslint": "^5.8.0",
-    "eslint-config-google": "^0.10.0",
+    "eslint-config-google": "^0.11.0",
     "eslint-plugin-jsdoc": "^3.9.1",
-    "eslint-plugin-node": "^7.0.1",
+    "eslint-plugin-node": "^8.0.0",
     "istanbul": "^0.4.5",
     "mocha": "^5.2.0"
   },
