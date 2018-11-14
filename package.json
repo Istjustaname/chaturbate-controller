@@ -1,6 +1,6 @@
 {
   "name": "@istjustaname/chaturbate-controller",
-  "version": "1.0.17",
+  "version": "1.0.18",
   "description": "A module for tracking the state of a Chaturbate profile.",
   "main": "index.js",
   "engines": {
@@ -28,7 +28,7 @@
   "devDependencies": {
     "chai": "^4.2.0",
     "coveralls": "^3.0.2",
-    "eslint": "^5.8.0",
+    "eslint": "^5.9.0",
     "eslint-config-google": "^0.11.0",
     "eslint-plugin-jsdoc": "^3.9.1",
     "eslint-plugin-node": "^8.0.0",
@@ -38,7 +38,7 @@
   "dependencies": {
     "@istjustaname/chaturbate-events": "github:istjustaname/chaturbate-events",
     "@istjustaname/chaturbate-panel-parser": "github:istjustaname/chaturbate-panel-parser",
-    "ajv": "^6.5.4",
+    "ajv": "^6.5.5",
     "cheerio": "^1.0.0-rc.2",
     "debug": "^4.1.0"
   }
