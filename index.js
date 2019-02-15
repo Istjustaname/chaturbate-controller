@@ -1,11 +1,11 @@
-"use strict";
+'use strict';
 
-const debug = require("debug")("chaturbate:controller");
-const { EventEmitter } = require("events");
-const cheerio = require("cheerio");
+const debug = require('debug')('chaturbate:controller');
+const {EventEmitter} = require('events');
+const cheerio = require('cheerio');
 
-const ChaturbateEvents = require("@istjustaname/chaturbate-events");
-const panelParser = require("@istjustaname/chaturbate-panel-parser");
+const ChaturbateEvents = require('@istjustaname/chaturbate-events');
+const panelParser = require('@istjustaname/chaturbate-panel-parser');
 
 /**
  * Controller states.
@@ -13,35 +13,36 @@ const panelParser = require("@istjustaname/chaturbate-panel-parser");
  * @enum {string}
  */
 const State = {
+
 	/** The websocket is connected. */
-	CONNECTED: "CONNECTED",
+	CONNECTED: 'CONNECTED',
 
 	/** The websocket is connecting. */
-	CONNECTING: "CONNECTING",
+	CONNECTING: 'CONNECTING',
 
 	/** The websocket has disconnected. */
-	DISCONNECTED: "DISCONNECTED",
+	DISCONNECTED: 'DISCONNECTED',
 
 	/** The websocket has thrown an error. */
-	ERROR: "ERROR",
+	ERROR: 'ERROR',
 
 	/** The websocket has filed to authenticate. */
-	FAIL: "FAIL",
+	FAIL: 'FAIL',
 
 	/** The controller is initializing. */
-	INIT: "INIT",
+	INIT: 'INIT',
 
 	/** The websocket has successfully joined the room. */
-	JOINED: "JOINED",
+	JOINED: 'JOINED',
 
 	/** You have been kicked from the room. */
-	KICKED: "KICKED",
+	KICKED: 'KICKED',
 
 	/** You have left the room. */
-	LEAVE: "LEAVE",
+	LEAVE: 'LEAVE',
 
 	/** The room is offline. */
-	OFFLINE: "OFFLINE"
+	OFFLINE: 'OFFLINE',
 };
 
 /**
@@ -50,20 +51,21 @@ const State = {
  * @enum {string}
  */
 const ModelStatus = {
+
 	/** The model is away from the room. */
-	AWAY: "AWAY",
+	AWAY: 'AWAY',
 
 	/** The model is in a group show. */
-	GROUP: "GROUP",
+	GROUP: 'GROUP',
 
 	/** The model is in a hidden show. */
-	HIDDEN: "HIDDEN",
+	HIDDEN: 'HIDDEN',
 
 	/** The model is in a private show. */
-	PRIVATE: "PRIVATE",
+	PRIVATE: 'PRIVATE',
 
 	/** The model is in a public show. */
-	PUBLIC: "PUBLIC"
+	PUBLIC: 'PUBLIC',
 };
 
 /**
@@ -73,25 +75,25 @@ const ModelStatus = {
  * @return {Object}
  * @private
  */
-const _transformPanelHtml = html => {
+const _transformPanelHtml = (html) => {
 	const $ = cheerio.load(html);
 
-	const transformed = $("tr").map((index, el) => {
+	const transformed = $('tr').map((index, el) => {
 		let label = $(el)
-			.find("th")
+			.find('th')
 			.text();
-		label = label.replace(/\s*\n\s*/g, "");
-		label = label.replace(/\s*:\s*$/g, "");
-		label = label.replace(/\s*-\s*$/g, "");
+		label = label.replace(/\s*\n\s*/g, '');
+		label = label.replace(/\s*:\s*$/g, '');
+		label = label.replace(/\s*-\s*$/g, '');
 
 		let value = $(el)
-			.find("td")
+			.find('td')
 			.text();
-		value = value.replace(/\s*\n\s*/g, "");
+		value = value.replace(/\s*\n\s*/g, '');
 
 		return {
 			label: label,
-			value: value
+			value: value,
 		};
 	});
 
@@ -102,6 +104,7 @@ const _transformPanelHtml = html => {
  * A controller for tracking chaturbate events and states.
  */
 class ChaturbateController extends EventEmitter {
+
 	/**
 	 * Constructor.
 	 *
@@ -114,11 +117,11 @@ class ChaturbateController extends EventEmitter {
 		this._browser = browser;
 
 		this._events = new ChaturbateEvents(browser);
-		this._events.on("init", e => this._onInit(e));
-		this._events.on("socket_hooked", e => this._onInit(e));
-		this._events.on("socket_open", () => this._onSocketOpen());
-		this._events.on("socket_error", e => this._onSocketError(e));
-		this._events.on("socket_close", e => this._onSocketClose(e));
+		this._events.on('init', (e) => this._onInit(e));
+		this._events.on('socket_hooked', (e) => this._onInit(e));
+		this._events.on('socket_open', () => this._onSocketOpen());
+		this._events.on('socket_error', (e) => this._onSocketError(e));
+		this._events.on('socket_close', (e) => this._onSocketClose(e));
 
 		this._api = {};
 		this._hooks = {};
@@ -160,7 +163,7 @@ class ChaturbateController extends EventEmitter {
 	 * @type {Array<string>}
 	 */
 	get eventNames() {
-		return this._events.names.concat(["model_status_change", "state_change", "goal_progress", "goal_reached"]);
+		return this._events.names.concat(['model_status_change', 'state_change', 'goal_progress', 'goal_reached']);
 	}
 
 	/**
@@ -182,7 +185,7 @@ class ChaturbateController extends EventEmitter {
 		if (this._state !== val) {
 			debug(`state changed to ${val}`);
 			this._state = val;
-			this.emit("state_change", { state: val });
+			this.emit('state_change', {state: val});
 		}
 	}
 
@@ -205,7 +208,7 @@ class ChaturbateController extends EventEmitter {
 		if (this._modelStatus !== val) {
 			debug(`model status changed to ${val}`);
 			this._modelStatus = val;
-			this.emit("model_status_change", { status: val });
+			this.emit('model_status_change', {status: val});
 		}
 	}
 
@@ -263,7 +266,7 @@ class ChaturbateController extends EventEmitter {
 			modelStatus: this.modelStatus,
 			panel: this.panel,
 			appInfo: this.appInfo,
-			goal: this.goal
+			goal: this.goal,
 		};
 	}
 
@@ -284,7 +287,7 @@ class ChaturbateController extends EventEmitter {
 	 */
 	set api(settings) {
 		this._api = {
-			getPanelUrl: settings.get_panel_url
+			getPanelUrl: settings.get_panel_url,
 		};
 	}
 
@@ -304,15 +307,15 @@ class ChaturbateController extends EventEmitter {
 	 * @ignore
 	 */
 	set appInfo(val) {
-		this._appInfo = val.split(",").map(app => {
-			const [name, url] = app.split("|");
+		this._appInfo = val.split(',').map((app) => {
+			const [name, url] = app.split('|');
 			if (!url) return {};
 			// eslint-disable-next-line no-unused-vars
 			const [unused, slot] = url.match(/\?slot=(\d+)/);
 			return {
 				name: name,
 				url: url,
-				slot: slot
+				slot: slot,
 			};
 		});
 	}
@@ -331,29 +334,27 @@ class ChaturbateController extends EventEmitter {
 		}
 
 		if (e.chatSettings) {
-			this.welcomeMessage = e.chatSettings.welcome_message || "";
+			this.welcomeMessage = e.chatSettings.welcome_message || '';
 			this.spyPrice = e.chatSettings.spy_price || 0;
 			this.privatePrice = e.chatSettings.private_price || 0;
 			this.groupNumUsersRequired = e.chatSettings.num_users_required_for_group_show || 0;
 			this.groupNumUsersWaiting = e.chatSettings.num_users_waiting_for_group_show || 0;
 			this.groupPrice = e.chatSettings.group_price || 0;
-			this.subject = e.chatSettings.current_subject || "";
-			this.gender = e.chatSettings.broadcaster_gender || "";
-			this.appInfo = e.chatSettings.app_info_json || "";
+			this.subject = e.chatSettings.current_subject || '';
+			this.gender = e.chatSettings.broadcaster_gender || '';
+			this.appInfo = e.chatSettings.app_info_json || '';
 
 			this.api = e.chatSettings;
-			this.panel = _transformPanelHtml(
-				await this._browser.fetch(this.api.getPanelUrl, {
-					_: new Date().getTime()
-				})
-			);
+			this.panel = _transformPanelHtml(await this._browser.fetch(this.api.getPanelUrl, {
+					_: new Date().getTime(),
+				}));
 			this.goal = panelParser(this.panelApp, this.panel);
 		}
 
 		if (e.settings) {
 			this.groupsEnabled = Boolean(e.settings.groups_enabled);
 			this.privatesEnabled = Boolean(e.settings.privates_enabled);
-			this.room = e.settings.room || "";
+			this.room = e.settings.room || '';
 
 			if (e.settings.connecting) {
 				this.state = State.CONNECTING;
@@ -365,7 +366,7 @@ class ChaturbateController extends EventEmitter {
 		}
 
 		if (e.initializerSettings) {
-			this.modelStatus = (e.initializerSettings.model_status || "").toUpperCase();
+			this.modelStatus = (e.initializerSettings.model_status || '').toUpperCase();
 
 			if (e.initializerSettings.joined) {
 				this.state = State.JOINED;
@@ -373,7 +374,7 @@ class ChaturbateController extends EventEmitter {
 		}
 
 		debug(this.settings);
-		this.emit("init", this.settings);
+		this.emit('init', this.settings);
 	}
 
 	/**
@@ -430,7 +431,7 @@ class ChaturbateController extends EventEmitter {
 			room_entry: this._onHookRoomEntry,
 			room_leave: this._onHookRoomLeave,
 			room_message: this._onHookRoomMessage,
-			tip: this._onHookTip
+			tip: this._onHookTip,
 		};
 	}
 
@@ -440,8 +441,8 @@ class ChaturbateController extends EventEmitter {
 	 * @private
 	 */
 	_patchEvents() {
-		this.eventNames.forEach(name => {
-			this._events.on(name, async e => {
+		this.eventNames.forEach((name) => {
+			this._events.on(name, async (e) => {
 				let result = e;
 				if (this._hooks[name]) {
 					debug(`hooked event ${name}`);
@@ -468,15 +469,15 @@ class ChaturbateController extends EventEmitter {
 		if (!oldGoal || !newGoal) return;
 
 		if (newGoal.goalCurrent !== oldGoal.goalCurrent) {
-			this.emit("goal_progress", newGoal);
+			this.emit('goal_progress', newGoal);
 		}
 
 		if (newGoal.hasMultipleGoals) {
 			if (newGoal.goalCount > oldGoal.goalCount) {
-				this.emit("goal_reached", newGoal);
+				this.emit('goal_reached', newGoal);
 			}
 		} else if (!newGoal.goalRemaining && oldGoal.goalRemaining) {
-			this.emit("goal_reached", newGoal);
+			this.emit('goal_reached', newGoal);
 		}
 	}
 
@@ -545,7 +546,7 @@ class ChaturbateController extends EventEmitter {
 		this.goal = panelParser(this.panelApp, this.panel);
 		return {
 			panel: this.panel,
-			goal: this.goal
+			goal: this.goal,
 		};
 	}
 
@@ -561,7 +562,7 @@ class ChaturbateController extends EventEmitter {
 		this.goal = panelParser(this.panelApp, this.panel);
 		return {
 			panel: this.panel,
-			goal: this.goal
+			goal: this.goal,
 		};
 	}
 
@@ -577,7 +578,7 @@ class ChaturbateController extends EventEmitter {
 		this.goal = panelParser(this.panelApp, this.panel);
 		return {
 			panel: this.panel,
-			goal: this.goal
+			goal: this.goal,
 		};
 	}
 
@@ -615,7 +616,7 @@ class ChaturbateController extends EventEmitter {
 	 * @return {Object}
 	 */
 	_onHookTitleChange(e) {
-		if (e.title === "") {
+		if (e.title === '') {
 			e.title = this.subject;
 		} else {
 			this.subject = e.title;
@@ -749,4 +750,4 @@ class ChaturbateController extends EventEmitter {
 	}
 }
 
-export ChaturbateController;
+module.exports = ChaturbateController;
