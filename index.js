@@ -4,8 +4,8 @@ const debug = require("debug")("chaturbate:controller");
 const { EventEmitter } = require("events");
 const cheerio = require("cheerio");
 
-import ChaturbateEvents from "@istjustaname/chaturbate-events";
-import panelParser from "@istjustaname/chaturbate-panel-parser";
+const ChaturbateEvents = require("@istjustaname/chaturbate-events");
+const panelParser = require("@istjustaname/chaturbate-panel-parser");
 
 /**
  * Controller states.
